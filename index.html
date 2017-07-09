@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title></title>
+	<link rel="stylesheet" href="">
+	<link rel="stylesheet" type="text/css" href="css/style.css">
+	<link rel="stylesheet" type="text/css" href="css/swiper-3.4.2.min.css">
+	<script src="js/ajax.js"></script>
+	<script src="js/swiper-3.4.2.min.js"></script>
+	<script src="js/index.js"></script>
+</head>
+<body>
+	<div class="top">
+		<div class="heading clearfix">
+			<div class="logo pull-left">
+				<a href="">你的音乐吧</a>
+			</div>
+			<ul class="nav">
+				<li><a href="">发现音乐</a></li>
+				<li><a href="">我的音乐</a></li>
+				<li><a href="">朋友</a></li>
+				<li><a href="">商城</a></li>
+				<li><a href="">音乐人</a></li>
+				<li><a href="">下载客户端</a></li>			
+			</ul>
+			<div class="search pull-left">
+				<div>
+					<input type="text" id="inp" placeholder="单曲/歌手/专辑/歌单/MV/用户" value="朴树">
+				</div>
+			</div>
+			<button id="btn1">搜索</button>					
+		</div>		
+	<div class="swiper-container">
+	  <div class="swiper-wrapper">
+	    <div class="swiper-slide"><img src="images/ban1.png" alt=""></div>
+	    <div class="swiper-slide"><img src="images/ban2.png" alt=""></div>
+	    <div class="swiper-slide"><img src="images/4.png" alt=""></div>
+	  </div>
+	</div>
+	<div class="mid wrapper clearfix">
+		<video autobuffer autoloop loop controls="" autoplay="" poster="images/9.jpg" id='vio'></video>
+		<div class="mid-info">			
+			<!-- <a>歌词:</a><span id="lyrics">sss</span>				 -->
+			<ul id="lyricContainer"> 
+  
+			</ul>
+		</div>		
+	</div>
+	<div class="content wrapper">
+		<ul class="clearfix" id="ul1">
+			<li><img src="images/3.png" alt=""><a href="">平淡里的安稳</a></li>
+			<li><img src="images/5.png" alt=""><a href="">卓别林之吻</a></li>
+			<li><img src="images/2.png" alt=""><a href="">时光静好，现世安稳</a></li>
+			<li><img src="images/6.png" alt=""><a href="">想唱就唱</a></li>
+			<li><img src="images/7.png" alt=""><a href="">奥黛丽.赫本</a></li>
+			<li><img src="images/8.png" alt=""><a href="">一叶知秋</a></li>
+			<li><img src="images/2.jpg" alt=""><a href="">平凡的生活有你</a></li>
+			<li><img src="images/9.png" alt=""><a href="">末世情节的光芒</a></li>
+		</ul>			
+	</div>
+	<audio autobuffer autoloop loop controls id="aud" ></audio>
+</body>
+</html> 
