@@ -1,8 +1,10 @@
 window.onload = function(){
 	var mySwiper = new Swiper('.swiper-container', {
 	autoplay: 1000,//可选选项，自动滑动
-	pagination : '.swiper-pagination',
+	pagination : '.swiper-pagination',    //分页器
 	paginationClickable :true,
+	nextButton: '.swiper-button-next',     //前进后退按钮
+  prevButton: '.swiper-button-prev',
 	});
 
 
@@ -12,6 +14,8 @@ window.onload = function(){
 	var ovideo = document.getElementById('vio');
 	var oaud = document.getElementById('aud');
 	// var oart = document.getElementById('artist');
+
+	
 	obtn1.onclick = function(){
 		ajax({
 			type:'get',
@@ -72,79 +76,65 @@ window.onload = function(){
 				success:function(data){
 					var oaud = document.getElementById('aud');
 					oaud.setAttribute('src',data.data[0].url);
-
+					
+			// 歌词显示		
 				ajax({
 					type:'get',
 					url:'https://api.imjad.cn/cloudmusic/?type=lyric&id='+target.getAttribute('data-song')+'&br=128000',
 					judg:true,
 					success:function(data){
-						var lyric = JSON.stringify(data.lrc.lyric);
-						var lyricContainer = document.getElementById('lyricContainer');
-						var arr_lyric = [];
-            var reg = /\[\d{2}:\d{2}.\d{1,3}\]/g;
-            var reg2 = /"|\[\d{2}:\d{2}.\d{1,3}\]/g;
-            var arr_lyric = lyric.split(/\\n/g);
-            var arr_lyric_time = [];
-            var arr_lyric_body = [];
+						var lyric = data.lrc.lyric;
+						// alert(lyric)   //显示的时间+歌词
 
-            for(var i=0;i<arr_lyric.length-1;i++){
-              arr_lyric_time.push(arr_lyric[i].match(reg));
+						//匹配时间
+						var timeReg = /\[\d{2}\:\d{2}\.\d{1,3}]/g;
+						var time = lyric.match(timeReg)
+						// alert(time)   
 
-              arr_lyric_body.push(arr_lyric[i].replace(reg2, ''));
-            }
+						//匹配歌词
+						var Alyric = [];
 
-            var mins_reg = /\d{2}:/g;
+						var lyrics = lyric.replace(timeReg,'');	
 
-            var change_time =[];
+						var Alyric = lyrics.split('\n');
 
-            arr_lyric_time.forEach( function(arr, index) {
-              var arr2 = arr.toString();
+						// Alyric.push(afterLyric);
+						// console.log(Alyric)
+						// alert(Array.isArray(Alyric) )
+							   //分割好的歌词
 
-              var t = arr2.slice(1, -1).split(':');
+						// var sonAndtime =[];  //二维数组
+						var Atime =[];
+						for(var i=0;i<time.length-1;i++){
 
-              arr_lyric.push([parseInt(t[0], 10) * 60 + parseFloat(t[1]), arr_lyric_body[index]])
-            });
-            for(var i=0;i<arr_lyric.length;i++){
-              // console.log(arr_lyric[i])
-            }
-            aud.ontimeupdate = function(){
-              for(var i=0;i<arr_lyric.length;i++){
-                if(this.currentTime > arr_lyric[i][0]){
-                  lyricContainer.innerHTML = '';
-                  var li = document.createElement('li');
-                  li.innerText = arr_lyric[i][1];
-                  lyricContainer.appendChild(li)
-                }
-              }
-            }
+							seconds = time[i].toString().slice(1,-1).split(':');
+							// console.log(Atime)      //把歌词时间分割了
+
+							seconds = parseInt (seconds[0])*60 + parseInt(seconds[1]);
+							// console.log(seconds )  //将时间转换成秒
+							Atime[i]=seconds
+
+							// alert(Array.isArray(Atime))
+							// sonAndtime[i] = [Atime[i],Alyric[i]];
+						}
+							// console.log(Atime)    //将时间和歌词放在一个数组
+
+						aud.ontimeupdate = function(){
+							// var li = document.createElement('li');
+							var oul1 = document.getElementById('lyricontent');
+							for(var i=0;i<Atime.length;i++){
+								if(this.currentTime>Atime[i]){
+									oul1.innerHTML = '';
+									var li = document.createElement('li')
+									li.innerHTML = Alyric[i];
+									oul1.appendChild(li)
+								}
+							}
+						}
 					}
 				})
-
-				}
-			});								
-		}			
+			}
+		});											
 	}
-
-	function parseLyric(text){
-		var lines = text.split('\n'),
-				pattern = /\[\d{2}:\d{2}.\d{2}\]/g,
-				result = [];
-		while (!pattern.test(lines[0])) {
-       lines = lines.slice(1);
-      };
-    lines[lines.length - 1].length === 0 && lines.pop();
-    lines.forEach(function(v, i, a){
-    	var time = v.match(pattern),
-    			value =v.replace(pattern,'');
-    	 time.forEach(function(v1, i1, a1) {
-    	 	var t = v1.slice(1,-1).split(':');
-    	 	result.push([parseInt(t[0],10) * 60 + parseFloat(t[1]), value])
-    	 });
-    });
-
-    result.sort(function(a, b) {
-      return a[0] - b[0];
-    });
-      return result;
-	}
+}
 }
